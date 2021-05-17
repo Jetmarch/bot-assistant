@@ -5,7 +5,12 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 
 
 
-vk_session = vk_api.VkApi(token='')
+file = open("token.txt")
+token_from_file = file.read()
+file.close()
+
+
+vk_session = vk_api.VkApi(token=token_from_file)
 
 longpoll = VkLongPoll(vk_session)
 vk = vk_session.get_api()
@@ -15,4 +20,3 @@ for event in longpoll.listen():
         if event.from_user:
             random_id = int(round(time.time() * 1000))
             vk.messages.send(user_id=event.user_id, message=event.text, random_id=random_id)
-
