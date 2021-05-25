@@ -24,10 +24,11 @@ class BotModule(ABC):
         pass
 
 
-    def is_keyword_exists_in_module(self) -> bool:
-        #Перебираем все keywords. Если находим, то возвращаем true
-        #Пока ещё не придумал лаконичный способ передачи функционала vk_api в каждый модуль
-        #Поэтому это простая заглушка на данный момент
+    def is_keyword_exists_in_module(self, user_text) -> bool:
+        for word in self.keywords:
+            if word in user_text:
+                return True
+
         return False
 
 
