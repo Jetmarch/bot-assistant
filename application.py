@@ -1,7 +1,7 @@
 from modules.echo_module import EchoModule
+from vk_wrapper import VKWrapper
 
-import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
+from vk_api.longpoll import  VkEventType
 
 
 class Application:
@@ -14,20 +14,18 @@ class Application:
         file.close()
 
         #Инициализируем vk_api
-        vk_session = vk_api.VkApi(token=token_from_file)
-        self.longpoll = VkLongPoll(vk_session)
-        self.vk = vk_session.get_api()
+        self.vk = VKWrapper(token_from_file)
 
         modules = list()
         #Инициализация каждого нового модуля должна быть здесь
         #modules.append(EchoModule(self.vk, self.longpoll))
 
-        self.default_module = EchoModule(self.vk, self.longpoll)
+        self.default_module = EchoModule(self.vk)
 
 
     def launch_bot(self) -> None:
         #Слушаем longpoll
-        for event in self.longpoll.listen():
+        for event in self.vk.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                 if event.from_user:
                     

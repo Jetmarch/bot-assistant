@@ -10,9 +10,8 @@ class BotModule(ABC):
     keywords = []
 
 
-    def __init__(self, vk, longpoll) -> None:
+    def __init__(self, vk) -> None:
         self.vk = vk
-        self.longpoll = longpoll
         self.keywords = list()
 
     @abstractmethod
