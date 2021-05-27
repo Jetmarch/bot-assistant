@@ -1,7 +1,8 @@
 from modules.echo_module import EchoModule
+from modules.test_module import TestModule
 from vk_wrapper import VKWrapper
-
 from vk_api.longpoll import  VkEventType
+
 
 
 class Application:
@@ -13,13 +14,11 @@ class Application:
         token_from_file = file.read()
         file.close()
 
-        #Инициализируем vk_api
         self.vk = VKWrapper(token_from_file)
 
-        modules = list()
+        self.modules = list()
         #Инициализация каждого нового модуля должна быть здесь
-        #modules.append(EchoModule(self.vk, self.longpoll))
-
+        self.modules.append(TestModule(self.vk))
         self.default_module = EchoModule(self.vk)
 
 
@@ -32,8 +31,9 @@ class Application:
                     #TODO: обработка запроса пользователя. Прогоняемся по всем модулям бота, пока не находим тот, который готов обработать запрос
                     is_request_processed = False
                     for module in self.modules:
-                        if module.is_keyword_exists_in_module(""" Keyword here """) == True:
-                            #Вызываем метод для обработки запроса пользователя, передавая полную строку в качестве аргумента
+                        if module.is_keyword_exists_in_module(event.text) == True:
+                            #Вызываем метод для обработки запроса пользователя, передавая событие в качестве аргумента
+                            module.process_request(event)
                             is_request_processed = True
                             break
                         
