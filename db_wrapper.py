@@ -6,7 +6,7 @@ class DB_Wrapper:
         self.con = sqlite3.connect('bot_memory.db')
         self.cur = self.con.cursor()
 
-
+    #TODO: Придумать способ не допустить инъекцию
     def execute_and_commit(self, query):
         try:
             res = self.cur.execute(query)
