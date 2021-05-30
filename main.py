@@ -1,5 +1,11 @@
+import asyncio
 from application import Application
-from modules.echo_module import EchoModule
+
 
 app = Application()
-app.launch_bot()
+loop = asyncio.get_event_loop()
+
+try:
+    loop.run_until_complete(app.launch_bot())
+finally:
+    loop.close()

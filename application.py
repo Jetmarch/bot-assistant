@@ -1,3 +1,5 @@
+import asyncio
+
 from logger import Logger
 from modules.echo_module import EchoModule
 from modules.test_module import TestModule
@@ -20,7 +22,7 @@ class Application:
         self.modules.append(TestModule(self.vk))
         self.default_module = EchoModule(self.vk)
 
-    def launch_bot(self) -> None:
+    async def launch_bot(self) -> None:
         try:
             # Слушаем longpoll
             for event in self.vk.longpoll.listen():
