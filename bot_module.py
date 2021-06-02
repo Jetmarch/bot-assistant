@@ -9,7 +9,6 @@ from abc import ABC
 class BotModule(ABC):
     keywords = []
 
-
     def __init__(self, vk) -> None:
         self.vk = vk
         self.keywords = list()
