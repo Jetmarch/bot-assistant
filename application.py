@@ -33,7 +33,7 @@ class Application:
                     if event.from_user:
                         is_request_processed = False
                         for module in self.modules:
-                            if module.is_keyword_exists_in_module(event.text) == True:
+                            if module.is_keyword_exists_in_module(event.text.lower()) == True:
                                 # Вызываем метод для обработки запроса пользователя, передавая событие в качестве аргумента
                                 module.process_request(event)
                                 is_request_processed = True
