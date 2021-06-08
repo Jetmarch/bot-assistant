@@ -6,14 +6,21 @@ import dateutil.parser as dparser
 
 
 class AlarmModule(BotModule):
+    alarms = []
     def __init__(self, vk) -> None:
         super().__init__(vk)
         self.keywords.extend(['будильник', 'таймер', 'напоминание', 'напомни'])
+        #Подгружаем из базы данных все ранее заданные будильники, если они не просрочены
+        #Инициализируем их и заносим в список
 
     
     def update(self):
         return super().update()
 
+    #Метод, срабатывающий по таймеру
+    def alarm_action(self, alarm_object):
+        #Посылаем напоминание пользователю
+        self.vk.send_message(alarm_object.vk_event, 'Напоминалка!')
 
     def process_request(self, event):
         #Попытка получить из строки пользователя дату и время
@@ -25,8 +32,12 @@ class AlarmModule(BotModule):
             current_day = alarm_date.day
             alarm_date = alarm_date.replace(day=current_day + 1)
 
-        print(str(alarm_date.day) + ' ' + str(alarm_date.hour))
+        alarm_object = AlarmObject(event, alarm_date)
 
         self.vk.send_message(event, 'Будильник будет установлен на ' + str(alarm_date))
         
 
+class AlarmObject:
+    def __init__(self, vk_event, alarm_date) -> None:
+        self.vk_event = vk_event
+        self.alarm_date = alarm_date
