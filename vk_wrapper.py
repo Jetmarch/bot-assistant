@@ -11,3 +11,7 @@ class VKWrapper:
     def send_message(self, event, text):
         random_id = int(round(time.time() * 1000))
         self.vk.messages.send(user_id=event.user_id, message=text, random_id=random_id)
+
+    def send_message(self, user_id, text):
+        random_id = int(round(time.time() * 1000))
+        self.vk.messages.send(user_id=user_id, message=text, random_id=random_id)
