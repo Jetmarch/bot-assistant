@@ -1,4 +1,5 @@
 import asyncio
+from db_wrapper import DB_Wrapper
 
 from logger import Logger
 from modules.echo_module import EchoModule
@@ -12,9 +13,8 @@ class Application:
     modules = []
 
     def __init__(self) -> None:
-        file = open("token.txt")
-        token_from_file = file.read()
-        file.close()
+        self.db = DB_Wrapper()
+        token_from_file = self.db.get_config_value('token')
 
         self.vk = VKWrapper(token_from_file)
 

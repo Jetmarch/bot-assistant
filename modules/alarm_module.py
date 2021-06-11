@@ -39,5 +39,5 @@ class AlarmModule(BotModule):
 
 class AlarmObject:
     def __init__(self, vk_event, alarm_date) -> None:
-        self.vk_event = vk_event
+        self.user_id = vk_event.user_id
         self.alarm_date = alarm_date
