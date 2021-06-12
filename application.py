@@ -1,4 +1,5 @@
-import asyncio
+import asyncio, sys
+from os import system
 from db_wrapper import DB_Wrapper
 
 from logger import Logger
@@ -42,4 +43,7 @@ class Application:
                         if is_request_processed == False:
                             self.default_module.process_request(event)
         except Exception as e:
-            Logger.log('ERROR', e)
+            exc_type, exc_object, exc_traceback = sys.exc_info()
+            filename = exc_traceback.tb_frame.f_code.co_filename
+            line_number = exc_traceback.tb_lineno
+            Logger.log('ERROR', str(e) + '\nFile: ' + str(filename) + '\nLine: ' + str(line_number) )

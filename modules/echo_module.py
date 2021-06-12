@@ -10,7 +10,7 @@ class EchoModule(BotModule):
         pass
 
     def process_request(self, event):
-        self.vk.send_message(event, event.text)
+        self.vk.send_message(event.user_id, event.text)
         return super().process_request(event)
         
 

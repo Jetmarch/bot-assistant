@@ -1,6 +1,8 @@
 from datetime import date
+from logger import Logger
 from bot_module import BotModule
 
+import sys
 import datetime
 import dateutil.parser as dparser
 
@@ -26,15 +28,18 @@ class AlarmModule(BotModule):
         #Попытка получить из строки пользователя дату и время
         #Если нет даты, то по умолчанию будильник рассчитывается на сегодня/завтра, в зависимости от текущего времени
         #Если нет времени, то по умолчанию уведомление придёт в указанную дату, но в 10 утра
-        alarm_date = dparser.parse(event.text, fuzzy=True)
+        try:
+            alarm_date = dparser.parse(event.text, fuzzy=True)
+            if(alarm_date.hour < datetime.datetime.now().hour):
+                current_day = alarm_date.day
+                alarm_date = alarm_date.replace(day=current_day + 1)
 
-        if(alarm_date.hour < datetime.datetime.now().hour):
-            current_day = alarm_date.day
-            alarm_date = alarm_date.replace(day=current_day + 1)
+            alarm_object = AlarmObject(event, alarm_date)
 
-        alarm_object = AlarmObject(event, alarm_date)
-
-        self.vk.send_message(event, 'Будильник будет установлен на ' + str(alarm_date))
+            self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
+        except:
+            Logger.log('MODULE WARNING', sys.exc_info()[0])
+            self.vk.send_message(event.user_id, 'Дата для будильника в строке не найдена')
         
 
 class AlarmObject:

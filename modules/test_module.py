@@ -10,7 +10,7 @@ class TestModule(BotModule):
         self.keywords.append("hello")
 
     def process_request(self, event):
-        self.vk.send_message(event, "test module is active!")
+        self.vk.send_message(event.user_id, "test module is active!")
 
     def update(self):
         pass
