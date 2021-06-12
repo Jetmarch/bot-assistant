@@ -5,6 +5,7 @@ from bot_module import BotModule
 import sys
 import datetime
 import dateutil.parser as dparser
+from threading import Timer
 
 
 class AlarmModule(BotModule):
@@ -38,7 +39,7 @@ class AlarmModule(BotModule):
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
         except:
-            Logger.log('MODULE WARNING', sys.exc_info()[0])
+            Logger.log('MODULE WARNING', '{0} \n User text: {1}'.format(sys.exc_info()[0], event.text))
             self.vk.send_message(event.user_id, 'Дата для будильника в строке не найдена')
         
 
@@ -46,3 +47,7 @@ class AlarmObject:
     def __init__(self, vk_event, alarm_date) -> None:
         self.user_id = vk_event.user_id
         self.alarm_date = alarm_date
+
+        current_time = datetime.datetime.now()
+        delta_in_seconds = (alarm_date - current_time).total_seconds()
+        
