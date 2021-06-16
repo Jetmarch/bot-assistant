@@ -9,10 +9,11 @@ from threading import Timer
 
 
 class AlarmModule(BotModule):
-    alarms = []
+    
     def __init__(self, vk) -> None:
         super().__init__(vk)
         self.keywords.extend(['будильник', 'таймер', 'напоминание', 'напомни'])
+        self.alarms = list()
         #Подгружаем из базы данных все ранее заданные будильники, если они не просрочены
         #Инициализируем их и заносим в список
 
@@ -21,9 +22,9 @@ class AlarmModule(BotModule):
         return super().update()
 
     #Метод, срабатывающий по таймеру
-    def alarm_action(self, alarm_object):
+    def alarm_action(self, user_id):
         #Посылаем напоминание пользователю
-        self.vk.send_message(alarm_object.vk_event, 'Напоминалка!')
+        self.vk.send_message(user_id, 'Напоминалка!')
 
     def process_request(self, event):
         #Попытка получить из строки пользователя дату и время
@@ -35,7 +36,8 @@ class AlarmModule(BotModule):
                 current_day = alarm_date.day
                 alarm_date = alarm_date.replace(day=current_day + 1)
 
-            alarm_object = AlarmObject(event, alarm_date)
+            alarm_object = AlarmObject(event, alarm_date, self.alarm_action)
+            self.alarms.append(alarm_object)
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
         except:
@@ -44,10 +46,13 @@ class AlarmModule(BotModule):
         
 
 class AlarmObject:
-    def __init__(self, vk_event, alarm_date) -> None:
+    def __init__(self, vk_event, alarm_date, alarm_action) -> None:
         self.user_id = vk_event.user_id
         self.alarm_date = alarm_date
 
         current_time = datetime.datetime.now()
         delta_in_seconds = (alarm_date - current_time).total_seconds()
+        #alarm_action - метод, который должен принимать user_id
+        self.timer = Timer(delta_in_seconds, alarm_action)
+        self.timer.start()
         
