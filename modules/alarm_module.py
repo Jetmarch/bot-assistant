@@ -36,8 +36,8 @@ class AlarmModule(BotModule):
                 current_day = alarm_date.day
                 alarm_date = alarm_date.replace(day=current_day + 1)
 
-            alarm_object = AlarmObject(event, alarm_date, self.alarm_action)
-            self.alarms.append(alarm_object)
+            #alarm_object = AlarmObject(event, alarm_date, self.alarm_action)
+            #self.alarms.append(alarm_object)
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
         except:

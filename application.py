@@ -6,6 +6,7 @@ from logger import Logger
 from modules.echo_module import EchoModule
 from modules.test_module import TestModule
 from modules.alarm_module import AlarmModule
+from modules.alchemy_helper_module import AlchemyHelperModule
 from vk_wrapper import VKWrapper
 from vk_api.longpoll import VkEventType
 
@@ -23,6 +24,7 @@ class Application:
         # Инициализация каждого нового модуля должна быть здесь
         self.modules.append(TestModule(self.vk))
         self.modules.append(AlarmModule(self.vk))
+        self.modules.append(AlchemyHelperModule(self.vk))
         self.default_module = EchoModule(self.vk)
         
 
