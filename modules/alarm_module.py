@@ -36,8 +36,8 @@ class AlarmModule(BotModule):
                 current_day = alarm_date.day
                 alarm_date = alarm_date.replace(day=current_day + 1)
 
-            #alarm_object = AlarmObject(event, alarm_date, self.alarm_action)
-            #self.alarms.append(alarm_object)
+            alarm_object = AlarmObject(event, alarm_date, self)
+            self.alarms.append(alarm_object)
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
         except:
@@ -46,13 +46,13 @@ class AlarmModule(BotModule):
         
 
 class AlarmObject:
-    def __init__(self, vk_event, alarm_date, alarm_action) -> None:
+    def __init__(self, vk_event, alarm_date, alarm_module) -> None:
         self.user_id = vk_event.user_id
         self.alarm_date = alarm_date
 
         current_time = datetime.datetime.now()
         delta_in_seconds = (alarm_date - current_time).total_seconds()
-        #alarm_action - метод, который должен принимать user_id
-        self.timer = Timer(delta_in_seconds, alarm_action)
+        
+        self.timer = Timer(delta_in_seconds, alarm_module.alarm_action, kwargs={'user_id':vk_event.user_id})
         self.timer.start()
         
