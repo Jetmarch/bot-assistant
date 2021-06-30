@@ -36,7 +36,7 @@ class AlarmModule(BotModule):
                 current_day = alarm_date.day
                 alarm_date = alarm_date.replace(day=current_day + 1)
 
-            alarm_object = AlarmObject(event, alarm_date, self)
+            alarm_object = AlarmObject(self.vk, event, alarm_date, self)
             self.alarms.append(alarm_object)
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
@@ -46,13 +46,17 @@ class AlarmModule(BotModule):
         
 
 class AlarmObject:
-    def __init__(self, vk_event, alarm_date, alarm_module) -> None:
+    def __init__(self, vk, vk_event, alarm_date, alarm_module) -> None:
+        self.vk = vk
         self.user_id = vk_event.user_id
         self.alarm_date = alarm_date
 
         current_time = datetime.datetime.now()
         delta_in_seconds = (alarm_date - current_time).total_seconds()
         
-        self.timer = Timer(delta_in_seconds, alarm_module.alarm_action, kwargs={'user_id':vk_event.user_id})
+        self.timer = Timer(delta_in_seconds, self.alarm_action)
         self.timer.start()
+
+    def alarm_action(self):
+        self.vk.send_message(self.user_id, 'Напоминалка!')
         
