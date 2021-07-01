@@ -22,10 +22,10 @@ class Application:
 
         self.modules = list()
         # Инициализация каждого нового модуля должна быть здесь
-        self.modules.append(TestModule(self.vk))
-        self.modules.append(AlarmModule(self.vk))
-        self.modules.append(AlchemyHelperModule(self.vk))
-        self.default_module = EchoModule(self.vk)
+        self.modules.append(TestModule(self.vk, self.db))
+        self.modules.append(AlarmModule(self.vk, self.db))
+        self.modules.append(AlchemyHelperModule(self.vk, self.db))
+        self.default_module = EchoModule(self.vk, self.db)
         
 
     async def launch_bot(self) -> None:

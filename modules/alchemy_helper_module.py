@@ -3,8 +3,8 @@ from bot_module import BotModule
 
 
 class AlchemyHelperModule(BotModule):
-    def __init__(self, vk) -> None:
-        super().__init__(vk)
+    def __init__(self, vk, db) -> None:
+        super().__init__(vk, db)
         self.keywords.extend(['алхимия', 'варки', 'алхим'])
 
     def update(self):

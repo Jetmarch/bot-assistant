@@ -3,8 +3,8 @@ from bot_module import BotModule
 
 
 class TestModule(BotModule):
-    def __init__(self, vk) -> None:
-        super().__init__(vk)
+    def __init__(self, vk, db) -> None:
+        super().__init__(vk, db)
         self.keywords.append("test")
         self.keywords.append("qq")
         self.keywords.append("hello")

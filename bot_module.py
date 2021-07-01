@@ -9,8 +9,9 @@ from abc import ABC
 class BotModule(ABC):
     keywords = []
 
-    def __init__(self, vk) -> None:
+    def __init__(self, vk, db) -> None:
         self.vk = vk
+        self.db = db
         self.keywords = list()
 
     @abstractmethod

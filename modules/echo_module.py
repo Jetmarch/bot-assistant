@@ -3,8 +3,8 @@ import time
 from bot_module import BotModule
 
 class EchoModule(BotModule):
-    def __init__(self, vk) -> None:
-        super().__init__(vk)
+    def __init__(self, vk, db) -> None:
+        super().__init__(vk, db)
 
     def update(self):
         pass
