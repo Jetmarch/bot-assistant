@@ -13,6 +13,7 @@ class BotModule(ABC):
         self.vk = vk
         self.db = db
         self.keywords = list()
+        self.module_name = 'DefaultName'
 
     @abstractmethod
     def update(self):

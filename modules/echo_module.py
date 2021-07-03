@@ -5,6 +5,7 @@ from bot_module import BotModule
 class EchoModule(BotModule):
     def __init__(self, vk, db) -> None:
         super().__init__(vk, db)
+        self.module_name = 'EchoModule'
 
     def update(self):
         pass

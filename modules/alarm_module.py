@@ -14,6 +14,7 @@ class AlarmModule(BotModule):
         super().__init__(vk, db)
         self.keywords.extend(['будильник', 'таймер', 'напоминание', 'напомни'])
         self.alarms = list()
+        self.module_name = 'AlarmModule'
         #Пусть каждый отдельный модуль будет беспокоиться о своих таблицах
         self.db.execute_and_commit('CREATE TABLE IF NOT EXISTS "Alarms" ("id" INTEGER,"user_id" TEXT NOT NULL,"alarm_date" TEXT NOT NULL,"is_repeat" TEXT NOT NULL,PRIMARY KEY("id" AUTOINCREMENT));')
 
