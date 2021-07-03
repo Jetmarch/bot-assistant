@@ -14,8 +14,8 @@ class AlarmModule(BotModule):
         super().__init__(vk, db)
         self.keywords.extend(['будильник', 'таймер', 'напоминание', 'напомни'])
         self.alarms = list()
-        #Создаём табличку, если такой нет
-        self.db.execute_and_commit('CREATE TABLE IF NOT EXISTS "Alarms" ("id" INTEGER,"user_id" TEXT NOT NULL,"alarm_date" TEXT NOT NULL,"is_repeat"	TEXT NOT NULL,PRIMARY KEY("id" AUTOINCREMENT));')
+        #Пусть каждый отдельный модуль будет беспокоиться о своих таблицах
+        self.db.execute_and_commit('CREATE TABLE IF NOT EXISTS "Alarms" ("id" INTEGER,"user_id" TEXT NOT NULL,"alarm_date" TEXT NOT NULL,"is_repeat" TEXT NOT NULL,PRIMARY KEY("id" AUTOINCREMENT));')
 
         #Подгружаем из базы данных все ранее заданные будильники, если они не просрочены
         #Инициализируем их и заносим в список
@@ -27,11 +27,6 @@ class AlarmModule(BotModule):
 
     def update(self):
         return super().update()
-
-    #Метод, срабатывающий по таймеру
-    def alarm_action(self, user_id):
-        #Посылаем напоминание пользователю
-        self.vk.send_message(user_id, 'Напоминалка!')
 
     def process_request(self, event):
         #Попытка получить из строки пользователя дату и время
