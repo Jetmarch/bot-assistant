@@ -40,13 +40,14 @@ class DB_Wrapper:
     def create_database_for_a_bot(self):
         try:
             self.execute_and_commit('CREATE TABLE IF NOT EXISTS CONFIG(id integer PRIMARY KEY AUTOINCREMENT, config_field text NOT NULL, config_value text)')
-            self.execute_and_commit('CREATE TABLE "ModuleStates" ("id" INTEGER NOT NULL UNIQUE,"module" TEXT NOT NULL UNIQUE,"user_id" TEXT NOT NULL,"state" TEXT NOT NULL,PRIMARY KEY("id" AUTOINCREMENT));')
+            self.execute_and_commit('CREATE TABLE IF NOT EXISTS "ModuleStates" ("id" INTEGER NOT NULL UNIQUE,"module" TEXT NOT NULL UNIQUE,"user_id" TEXT NOT NULL,"state" TEXT NOT NULL,PRIMARY KEY("id" AUTOINCREMENT));')
         except Exception as e:
             Logger.log('ERROR', e)
     
     def get_config_value(self, config_field) -> str:
         try:
             res = self.execute('SELECT config_value FROM CONFIG WHERE config_field = "{0}"'.format(config_field))
+
             return res.fetchone()[0]
         except Exception as e:
             Logger.log('ERROR', e)
@@ -65,8 +66,8 @@ class DB_Wrapper:
 
     def get_user_state(self, module, user_id):
         try:
-            res = self.execute('SELECT state FROM ModuleState WHERE module = {0} and user_id = {1}'.format(module, user_id))
-            return res.fetchall()
+            res = self.execute('SELECT state FROM ModuleStates WHERE module = "{0}" and user_id = "{1}"'.format(module, user_id))
+            return res.fetchone()[0]
         except Exception as e:
             Logger.log('ERROR', e)
 
