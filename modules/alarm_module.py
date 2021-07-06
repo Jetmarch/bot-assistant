@@ -24,7 +24,7 @@ class AlarmModule(BotModule):
         for row in alarm_list:
             alarm_date = dparser.parse(row[2], fuzzy=True)
             if alarm_date > datetime.datetime.now():
-                self.alarms.append(AlarmObject(self.vk, row[1], alarm_date, self))
+                self.alarms.append(AlarmObject(self.vk, row[1], alarm_date))
 
     def update(self):
         return super().update()
@@ -39,7 +39,7 @@ class AlarmModule(BotModule):
                 current_day = alarm_date.day
                 alarm_date = alarm_date.replace(day=current_day + 1)
 
-            alarm_object = AlarmObject(self.vk, event.user_id, alarm_date, self)
+            alarm_object = AlarmObject(self.vk, event.user_id, alarm_date)
             self.db.execute_and_commit('INSERT INTO Alarms(user_id, alarm_date, is_repeat) VALUES ("{0}", "{1}", "N")'.format(event.user_id, alarm_date))
 
             self.alarms.append(alarm_object)
@@ -51,7 +51,7 @@ class AlarmModule(BotModule):
         
 
 class AlarmObject(object):
-    def __init__(self, vk, user_id, alarm_date, alarm_module) -> None:
+    def __init__(self, vk, user_id, alarm_date) -> None:
         self.vk = vk
         self.user_id = user_id
         self.alarm_date = alarm_date
