@@ -45,6 +45,9 @@ class AlarmModule(BotModule):
             self.alarms.append(alarm_object)
 
             self.vk.send_message(event.user_id, 'Будильник будет установлен на ' + str(alarm_date))
+        except ValueError as e:
+            Logger.log('MODULE WARNING', '{0} \n User text: {1}'.format(sys.exc_info()[0], event.text))
+            self.vk.send_message(event.user_id, 'Не нашёл дату в строке :(')
         except:
             Logger.log('MODULE WARNING', '{0} \n User text: {1}'.format(sys.exc_info()[0], event.text))
             self.vk.send_message(event.user_id, 'Упс, что-то пошло не так!')
