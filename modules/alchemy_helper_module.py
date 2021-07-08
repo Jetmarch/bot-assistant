@@ -34,9 +34,18 @@ class AlchemyHelperModule(BotModule):
         """
 
     def first_stage(self, event):
+        #TODO: сделать список сообщений-приветствий и рандомить их каждый раз
         self.vk.send_message(event.user_id, 'Доброй пожаловать в модуль алхимии!\n Укажите количество затраченного катализатора')
         self.db.set_user_state(self.module_name, event.user_id, '2')
 
     def second_stage(self, event):
-        self.vk.send_message(event.user_id, 'Заглушка для второй стадии')
+        user_arguments = []
+        for word in event.text.split():
+            if word.isdigit():
+                user_arguments.append(int(word))
+        catalyst_cost = 413.25
+        count_of_ingredients = 5
+        total_cost = user_arguments[0] * count_of_ingredients * catalyst_cost
+
+        self.vk.send_message(event.user_id, 'Общие затраты {0}'.format(total_cost))
         self.db.set_user_state(self.module_name, event.user_id, '1')

@@ -34,6 +34,11 @@ class Application:
             for event in self.vk.longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
                     if event.from_user:
+
+                        #TODO: проверка на незавершенные действия от пользователя.
+                        #Если в таблице с состояниями модулей есть запись с user_id пользователя
+                        #То вызываем тот модуль, состояние которого не было закрыто пользователем
+                        #Каждый модуль должен быть ответственен за закрытие состояния
                         is_request_processed = False
                         for module in self.modules:
                             if module.is_keyword_exists_in_module(event.text.lower()) == True:
