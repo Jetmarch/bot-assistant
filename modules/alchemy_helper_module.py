@@ -19,19 +19,11 @@ class AlchemyHelperModule(BotModule):
     def process_request(self, event):
         module_state_for_current_user = self.db.get_user_state(self.module_name, event.user_id)
         print(module_state_for_current_user)
-        self.module_states[module_state_for_current_user](event)
-
-        """
-        user_arguments = []
-        for word in event.text.split():
-            if word.isdigit():
-                user_arguments.append(int(word))
-        catalyst_cost = 413.25
-        count_of_ingredients = 5
-        total_cost = user_arguments[0] * count_of_ingredients * catalyst_cost
-
-        self.vk.send_message(event.user_id, 'Общие затраты {0}'.format(total_cost))
-        """
+        if module_state_for_current_user:
+            print(module_state_for_current_user[0])
+            self.module_states[module_state_for_current_user[0]](event)
+        else:
+            self.first_stage(event)
 
     def first_stage(self, event):
         #TODO: сделать список сообщений-приветствий и рандомить их каждый раз
@@ -40,12 +32,16 @@ class AlchemyHelperModule(BotModule):
 
     def second_stage(self, event):
         user_arguments = []
+        catalyst_cost = 413.25
+        count_of_ingredients = 5
         for word in event.text.split():
             if word.isdigit():
                 user_arguments.append(int(word))
-        catalyst_cost = 413.25
-        count_of_ingredients = 5
-        total_cost = user_arguments[0] * count_of_ingredients * catalyst_cost
+        if len(user_arguments) != 0:
+            total_cost = user_arguments[0] * count_of_ingredients * catalyst_cost
+            self.vk.send_message(event.user_id, 'Общие затраты {0}'.format(total_cost))
+            self.db.close_user_state(self.module_name, event.user_id)
+        else:
+            self.vk.send_message(event.user_id, 'Укажите количество катализатора')
 
-        self.vk.send_message(event.user_id, 'Общие затраты {0}'.format(total_cost))
-        self.db.set_user_state(self.module_name, event.user_id, '1')
+        

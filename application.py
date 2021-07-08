@@ -39,6 +39,10 @@ class Application:
                         #Если в таблице с состояниями модулей есть запись с user_id пользователя
                         #То вызываем тот модуль, состояние которого не было закрыто пользователем
                         #Каждый модуль должен быть ответственен за закрытие состояния
+
+                        states = self.db.get_unfinished_state_by_user_id(event.user_id)
+                        if states:
+                            print(states[0])
                         is_request_processed = False
                         for module in self.modules:
                             if module.is_keyword_exists_in_module(event.text.lower()) == True:
