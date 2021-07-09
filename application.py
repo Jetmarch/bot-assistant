@@ -40,19 +40,22 @@ class Application:
                         #То вызываем тот модуль, состояние которого не было закрыто пользователем
                         #Каждый модуль должен быть ответственен за закрытие состояния
 
-                        states = self.db.get_unfinished_state_by_user_id(event.user_id)
-                        if states:
-                            print(states[0])
-                        is_request_processed = False
-                        for module in self.modules:
-                            if module.is_keyword_exists_in_module(event.text.lower()) == True:
-                                # Вызываем метод для обработки запроса пользователя, передавая событие в качестве аргумента
-                                module.process_request(event)
-                                is_request_processed = True
-                                break
+                        module_name_with_unfinished_state = self.db.get_unfinished_state_by_user_id(event.user_id)
+                        if module_name_with_unfinished_state:
+                            for module in self.modules:
+                                if module.module_name == module_name_with_unfinished_state:
+                                    module.process_request(event)
+                        else:
+                            is_request_processed = False
+                            for module in self.modules:
+                                if module.is_keyword_exists_in_module(event.text.lower()) == True:
+                                    # Вызываем метод для обработки запроса пользователя, передавая событие в качестве аргумента
+                                    module.process_request(event)
+                                    is_request_processed = True
+                                    break
 
-                        if is_request_processed == False:
-                            self.default_module.process_request(event)
+                            if is_request_processed == False:
+                                self.default_module.process_request(event)
         except Exception as e:
             exc_type, exc_object, exc_traceback = sys.exc_info()
             filename = exc_traceback.tb_frame.f_code.co_filename

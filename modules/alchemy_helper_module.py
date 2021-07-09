@@ -18,9 +18,7 @@ class AlchemyHelperModule(BotModule):
 
     def process_request(self, event):
         module_state_for_current_user = self.db.get_user_state(self.module_name, event.user_id)
-        print(module_state_for_current_user)
         if module_state_for_current_user:
-            print(module_state_for_current_user[0])
             self.module_states[module_state_for_current_user[0]](event)
         else:
             self.first_stage(event)

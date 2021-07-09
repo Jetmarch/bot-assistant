@@ -68,9 +68,7 @@ class DB_Wrapper:
     def get_user_state(self, module_name, user_id):
         try:
             res = self.execute('SELECT state FROM ModuleStates WHERE module_name = "{0}" and user_id = "{1}"'.format(module_name, user_id))
-            if res.fetchone():
-                return res.fetchone()[0]        
-            return None
+            return res.fetchone()[0]
         except Exception as e:
             Logger.log('ERROR {0}'.format(sys._getframe(  ).f_code.co_name), e)
 
@@ -89,6 +87,6 @@ class DB_Wrapper:
     def get_unfinished_state_by_user_id(self, user_id):
         try:
             res = self.execute('SELECT module_name FROM ModuleStates WHERE user_id = "{0}"'.format(user_id))
-            return res.fetchall()
+            return res.fetchone()[0]
         except Exception as e:
             Logger.log('ERROR {0}'.format(sys._getframe(  ).f_code.co_name), e)
