@@ -1,4 +1,5 @@
 *.json
-*.txt
+log.txt
+token.txt
 *.pyc
 bot_memory.db

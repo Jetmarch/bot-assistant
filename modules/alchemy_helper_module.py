@@ -28,6 +28,8 @@ class AlchemyHelperModule(BotModule):
         self.vk.send_message(event.user_id, 'Доброй пожаловать в модуль алхимии!\n Укажите количество затраченного катализатора')
         self.db.set_user_state(self.module_name, event.user_id, '2')
 
+    #TODO: Сделать настройки значений стоимости катализатора и количества аргументов
+    #Создать таблицу для этого и записывать значения в неё
     def second_stage(self, event):
         user_arguments = []
         catalyst_cost = 413.25
