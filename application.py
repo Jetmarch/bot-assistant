@@ -17,9 +17,9 @@ class Application:
 
     def __init__(self) -> None:
         self.db = DB_Wrapper()
-        #token_from_file = self.db.get_config_value('token')
-        token_from_env = os.environ.get('TOKEN', None)
-        self.vk = VKWrapper(token_from_env)
+        token_from_db = self.db.get_config_value('token')
+        #token_from_env = os.environ.get('TOKEN', None)
+        self.vk = VKWrapper(token_from_db)
 
         self.modules = list()
         # Инициализация каждого нового модуля должна быть здесь
